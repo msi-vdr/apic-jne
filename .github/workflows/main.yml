@@ -5,12 +5,15 @@ on: [push]
 jobs:
   governance-scan:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
+    # Kita menggunakan container resmi agar tidak perlu install manual
+    container:
+      image: ibmcom/apic-toolkit:latest 
 
-      - name: Install API Connect Toolkit
-        run: npm install -g apiconnect
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
       - name: Run Governance Scan
         run: |
-          apic governance:validate --server <alamat-server-anda> --api <nama-file-api>.yaml --ruleset <nama-ruleset-anda>
+          # Di dalam container ini, perintah 'apic' sudah otomatis terinstal
+          apic governance:validate --server <alamat-server-anda> --api jsonplaceholder.yaml --ruleset <nama-ruleset-anda>
