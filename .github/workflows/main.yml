@@ -1,0 +1,16 @@
+name: API Governance Check
+
+on: [push]
+
+jobs:
+  governance-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install API Connect Toolkit
+        run: npm install -g v3-apic
+
+      - name: Run Governance Scan
+        run: |
+          apic governance:validate --server <alamat-server-anda> --api <nama-file-api>.yaml --ruleset <nama-ruleset-anda>
