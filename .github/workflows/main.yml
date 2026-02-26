@@ -3,17 +3,17 @@ name: API Governance POC
 on: [push]
 
 jobs:
-  check-api:
+  governance-scan:
     runs-on: ubuntu-latest
-    # Kita pakai 'container' supaya tidak perlu INSTALL manual yang bikin error tadi
-    container:
-      image: ibmcom/apic-toolkit:latest 
-
     steps:
       - name: Ambil Kode dari Git
         uses: actions/checkout@v3
 
-      - name: Jalankan Validasi Governance
+      - name: Install Linter Ringan (Spectral)
+        run: npm install -g @stoplight/spectral-cli
+
+      - name: Jalankan Scan Keamanan API
         run: |
-          # Perintah ini akan langsung memanggil 'Polisi' APIC
-          apic governance:validate --server <URL_SERVER_ANDA> --api jsonplaceholder.yaml --ruleset <NAMA_RULESET>
+          # Ini akan mengecek file API Anda secara otomatis
+          # Jika ada error standar, GitHub akan langsung MERAH (Stop Build)
+          spectral lint jsonplaceholder.yaml
