@@ -1,19 +1,19 @@
-name: API Governance Check
+name: API Governance POC
 
 on: [push]
 
 jobs:
-  governance-scan:
+  check-api:
     runs-on: ubuntu-latest
-    # Kita menggunakan container resmi agar tidak perlu install manual
+    # Kita pakai 'container' supaya tidak perlu INSTALL manual yang bikin error tadi
     container:
       image: ibmcom/apic-toolkit:latest 
 
     steps:
-      - name: Checkout Code
+      - name: Ambil Kode dari Git
         uses: actions/checkout@v3
 
-      - name: Run Governance Scan
+      - name: Jalankan Validasi Governance
         run: |
-          # Di dalam container ini, perintah 'apic' sudah otomatis terinstal
-          apic governance:validate --server <alamat-server-anda> --api jsonplaceholder.yaml --ruleset <nama-ruleset-anda>
+          # Perintah ini akan langsung memanggil 'Polisi' APIC
+          apic governance:validate --server <URL_SERVER_ANDA> --api jsonplaceholder.yaml --ruleset <NAMA_RULESET>
