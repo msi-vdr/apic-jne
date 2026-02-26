@@ -1,0 +1,118 @@
+swagger: '2.0'
+info:
+  x-ibm-name: test-api
+  version: 2.0.0
+  description: API untuk mengelola data user.
+  title: Users V2
+host: $(catalog.host)
+basePath: /
+schemes:
+  - https
+produces:
+  - application/json
+consumes:
+  - application/json
+x-ibm-configuration:
+  gateway: datapower-api-gateway
+  type: rest
+  phase: realized
+  enforced: true
+  testable: true
+  cors:
+    enabled: true
+  assembly:
+    execute:
+      - parse:
+          version: 2.2.0
+          title: parse
+          parse-settings-reference:
+            parse-settings:
+              document_type: json
+          use-content-type: true
+      - validate:
+          version: 2.7.0
+          title: validate
+          graphql-error-policy: all
+          compile-settings: {}
+          validate-against: definition
+          input: request
+          output: message
+      - invoke:
+          version: 2.0.0
+          title: Panggil Backend
+          backend-type: detect
+          header-control:
+            type: blocklist
+            values: []
+          parameter-control:
+            type: allowlist
+            values: []
+          timeout: 60
+          verb: GET
+          chunked-uploads: true
+          persistent-connection: true
+          target-url: >-
+            https://jsonplaceholder.typicode.com/users?id=$(request.parameters.id)
+          inject-proxy-headers: true
+  properties:
+    target-url:
+      value: https://jsonplaceholder.typicode.com/users
+      description: The URL of the target service
+      encoded: false
+  activity-log:
+    enabled: true
+    success-content: activity
+    error-content: payload
+paths:
+  /users/user:
+    get:
+      summary: Get user details by id
+      operationId: getUserById
+      parameters:
+        - name: id
+          in: query
+          required: true
+          type: integer
+          format: int64
+          description: Id unik dari user
+      responses:
+        '200':
+          description: Berhasil mengambil data user
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+        '401':
+          description: Unauthorized - API Key tidak valid
+        '404':
+          description: User tidak ditemukan
+securityDefinitions:
+  ApiKeyAuth:
+    type: apiKey
+    in: header
+    name: X-IBM-Client-Id
+security:
+  - ApiKeyAuth: []
+definitions:
+  User:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+        pattern: ^[a-zA-Z ]+$
+        maxLength: 100
+      email:
+        type: string
+        format: email
+        maxLength: 255
+      username:
+        type: string
+        maxLength: 50
+        pattern: ^[a-zA-Z0-9_]+$
+      website:
+        type: string
+        maxLength: 100
+        pattern: ^(http|https)://.*$
