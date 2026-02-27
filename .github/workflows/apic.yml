@@ -1,0 +1,21 @@
+name: API Governance POC
+
+on: [push, pull_request]
+
+jobs:
+  governance-scan:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Mengambil kode dari repositori GitHub Anda
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # 2. Menginstal linter ringan (sama dengan engine webMethods)
+      - name: Install API Linter (Spectral)
+        run: npm install -g @stoplight/spectral-cli
+
+      # 3. Jalankan Validasi Desain API
+      # Jika file API melanggar aturan, step ini akan ERROR dan build STOP (Merah)
+      - name: Run Governance Scan
+        run: |
+          spectral lint openapi2.yaml
