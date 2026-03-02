@@ -13,6 +13,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+    - name: Validate API Governance (Spectral)
+      run: |
+        npm install -g @stoplight/spectral-cli
+        spectral lint openapi2.yaml --ruleset .spectral.yaml
     - name: Difference
       id: difference-output
       run: |
