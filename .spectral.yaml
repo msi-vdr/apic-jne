@@ -1,0 +1,10 @@
+extends: ["spectral:oas"]
+rules:
+  check-title-jne:
+    description: "Judul API harus mengandung kata JNE"
+    given: "$.info.title"
+    severity: error
+    then:
+      function: pattern
+      functionOptions:
+        match: "JNE"
