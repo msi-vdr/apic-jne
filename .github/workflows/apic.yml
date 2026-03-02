@@ -3,9 +3,9 @@ name: API Governance POC
 on: [pull_request, workflow_dispatch, push]
 
 env:
-  API_HOST: env5717743.a-vir-c1.apiconnect.ipaas.automation.ibm.com
+  API_HOST: us-east-a.apiconnect.automation.ibm.com
   PLATFORM_API_PREFIX: platform-api
-  PROVIDER_ORG: sandbox-test-app
+  PROVIDER_ORG: env5717743
   API_FILES: openapi2.yaml
 
 jobs:
