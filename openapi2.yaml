@@ -3,7 +3,7 @@ info:
   x-ibm-name: test-api
   version: 2.0.0
   description: API untuk mengelola data user.
-  title: P
+  title: API JNE Express Tracking
 host: $(catalog.host)
 basePath: /
 schemes:
