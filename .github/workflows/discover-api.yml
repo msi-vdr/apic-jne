@@ -24,7 +24,7 @@ jobs:
     - name: Check Workflow changed
       id: check_workflow_changed
       run: |
-        echo "action_updates=$(git diff --name-only --diff-filter=ACMRT ${{ github.event.before }} ${{ github.sha }} | grep discovery-api.yml | xargs)" >> $GITHUB_OUTPUT
+        echo "action_updates=$(git diff --name-only --diff-filter=ACMRT ${{ github.event.before }} ${{ github.sha }} | grep discover-api.yml | xargs)" >> $GITHUB_OUTPUT
     - name: Changed API File Name
       id: changed_filename
       run: |
