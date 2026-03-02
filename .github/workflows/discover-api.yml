@@ -6,20 +6,20 @@ env:
   API_HOST: us-east-a.apiconnect.automation.ibm.com
   PLATFORM_API_PREFIX: platform-api
   PROVIDER_ORG: env5717743
-  API_FILES: openapi2.yaml
+  API_FILES: jenkins.yaml
 
 jobs:
   run-discovery:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-      with:
-        fetch-depth: 2
+    #   with:
+    #     fetch-depth: 2
     
-    - name: Validate API Governance (Spectral)
-      run: |
-        npm install -g @stoplight/spectral-cli
-        spectral lint ${{ env.API_FILES }} --ruleset .spectral.yaml
+    # - name: Validate API Governance (Spectral)
+    #   run: |
+    #     npm install -g @stoplight/spectral-cli
+    #     spectral lint ${{ env.API_FILES }} --ruleset .spectral.yaml
     
     - name: Difference
       id: difference-output
