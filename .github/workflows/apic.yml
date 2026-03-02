@@ -1,4 +1,4 @@
-name: API Governance POC
+name: Sync Discovered API with APIConnect
 
 on: [pull_request, workflow_dispatch, push]
 
