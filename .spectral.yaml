@@ -1,6 +1,5 @@
 extends: ["spectral:oas"]
 rules:
-  # Kita buat aturan: Nama API tidak boleh asal-asalan
   check-title-jne:
     description: "Judul API harus mengandung kata JNE"
     given: "$.info.title"
