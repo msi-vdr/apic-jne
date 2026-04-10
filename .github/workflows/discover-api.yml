@@ -36,6 +36,7 @@ jobs:
         api_files: ${{ env.API_FILES }}
         resync_check: true
         git_diff: ${{ steps.difference-output.outputs.action_updates }}
+        insecure_skip_tls_verify: true
         
     - name: Display the action-result
       run: |
