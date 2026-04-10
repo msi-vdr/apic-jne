@@ -6,6 +6,7 @@ env:
   PLATFORM_API_PREFIX: platform-api-jne
   PROVIDER_ORG: dev4501662
   API_FILES: openapi2.yaml
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   run-discovery:
