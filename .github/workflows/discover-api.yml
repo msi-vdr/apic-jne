@@ -32,11 +32,8 @@ jobs:
         platform_api_prefix: ${{ env.PLATFORM_API_PREFIX }}
         provider_org: ${{ env.PROVIDER_ORG }}
         api_key: ${{ secrets.apicApikey }}
-        if: env.API_FILES
         api_files: ${{ env.API_FILES }}
-        else if: env.API_FOLDERS
-        api_folders: ${{ env.API_FOLDERS }}
-        resync_check: ${{ true }}
+        resync_check: true
         git_diff: ${{ steps.difference-output.outputs.action_updates }}
         
     - name: Display the action-result
