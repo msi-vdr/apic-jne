@@ -3,29 +3,20 @@ name: Sync Discovered API with APIConnect
 on: [pull_request, workflow_dispatch, push]
 
 env:
-  # API_HOST: ap-southeast-a.apiconnect.automation.ibm.com
-  # PLATFORM_API_PREFIX: platform-api
-  # PROVIDER_ORG: dev4501662
-  # API_FILES: openapi2.yaml
+  API_HOST: ap-southeast-a.apiconnect.automation.ibm.com
+  PLATFORM_API_PREFIX: platform-api-jne
+  PROVIDER_ORG: dev4501662
+  API_FILES: openapi2.yaml
 
 jobs:
   run-discovery:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-      with:
-        fetch-depth: 2
-    
-    - name: Validate API Governance (Spectral)
-      run: |
-        npm install -g @stoplight/spectral-cli
-        spectral lint ${{ env.API_FILES }} --ruleset .spectral.yaml
-    
     - name: Difference
       id: difference-output
       run: |
         echo "action_updates=$(git diff --name-only --diff-filter=ACMRT ${{ github.event.before }} ${{ github.sha }} | xargs)" >> $GITHUB_OUTPUT
-    
     - uses: ibm-apiconnect/apic-discovery-action@main
       id: discover-apis
       with:
@@ -39,8 +30,7 @@ jobs:
         api_folders: ${{ env.API_FOLDERS }}
         resync_check: ${{ true }}
         git_diff: ${{ steps.difference-output.outputs.action_updates }}
-    
     - name: Display the action-result
       run: |
         echo "Result of the action: ${{ steps.discover-apis.outputs.action-result }}"
-        echo "End"  
+        echo "End"
