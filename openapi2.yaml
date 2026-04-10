@@ -3,7 +3,7 @@ info:
   x-ibm-name: test-api
   version: 2.0.0
   description: API untuk mengelola data user.
-  title: JNE Express Tracking APII
+  title: JNEX Tracking API
 host: $(catalog.host)
 basePath: /
 schemes:
@@ -25,17 +25,14 @@ x-ibm-configuration:
       - parse:
           version: 2.2.0
           title: parse
-          parse-settings-reference:
-            parse-settings:
-              document_type: json
           use-content-type: true
       - validate:
           version: 2.7.0
           title: validate
           graphql-error-policy: all
           compile-settings: {}
-          validate-against: definition
-          input: request
+          validate-against: body-param
+          input: message
           output: message
       - invoke:
           version: 2.0.0
@@ -51,8 +48,7 @@ x-ibm-configuration:
           verb: GET
           chunked-uploads: true
           persistent-connection: true
-          target-url: >-
-            https://jsonplaceholder.typicode.com/users?id=$(request.parameters.id)
+          target-url: https://jsonplaceholder.typicode.com/users?id=$(message.body.id)
           inject-proxy-headers: true
   properties:
     target-url:
@@ -65,16 +61,26 @@ x-ibm-configuration:
     error-content: payload
 paths:
   /users/user:
-    get:
+    post:
       summary: Get user details by id
       operationId: getUserById
       parameters:
-        - name: id
-          in: query
+        - in: body
+          name: body
           required: true
-          type: integer
-          format: int64
-          description: Id unik dari user
+          schema:
+            type: object
+            required:
+              - id
+              - name
+            properties:
+              id:
+                type: integer
+                format: int64
+              name:
+                type: string
+                maxLength: 100
+                pattern: ^[a-zA-Z ]+$
       responses:
         '200':
           description: Berhasil mengambil data user
@@ -86,6 +92,8 @@ paths:
           description: Unauthorized - API Key tidak valid
         '404':
           description: User tidak ditemukan
+      consumes:
+        - application/json
 securityDefinitions:
   ApiKeyAuth:
     type: apiKey
